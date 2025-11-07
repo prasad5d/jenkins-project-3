@@ -1,4 +1,5 @@
 terraform {
+
   required_providers {
     aws = {
       source = "hashicorp/aws"
@@ -12,6 +13,9 @@ provider "aws" {
 }
 resource "aws_vpc" "myvpc" {
   cidr_block = "30.30.0.0/16"
+}
+resource "aws_vpc" "myvpc-1" {
+  cidr_block = "30.40.0.0/16"
 }
 resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.myvpc.id
@@ -48,14 +52,17 @@ resource "aws_eip" "mynat" {
 
 
 resource "aws_nat_gateway" "Ng" {
-  allocation_id = aws_eip.elastic.id
+  allocation_id = aws_eip.mynat.id
   subnet_id     = aws_subnet.public.id
 
 }  
 resource "aws_route_table" "CRT" {
   vpc_id = aws_vpc.myvpc.id
-
-} 
+ route {
+    cidr_block = "0.0.0.0/24"
+    gateway_id = aws_nat_gateway.Ng.id
+    }
+}
 
 resource "aws_route_table_association" "public_association" {
   subnet_id      = aws_subnet.public.id
