@@ -48,14 +48,17 @@ resource "aws_eip" "mynat" {
 
 
 resource "aws_nat_gateway" "Ng" {
-  allocation_id = aws_eip.elastic.id
+  allocation_id = aws_eip.mynat.id
   subnet_id     = aws_subnet.public.id
 
 }  
 resource "aws_route_table" "CRT" {
   vpc_id = aws_vpc.myvpc.id
-
-} 
+ route {
+    cidr_block = "0.0.0.0/24"
+    gateway_id = aws_nat_gateway.Ng.id
+    }
+}
 
 resource "aws_route_table_association" "public_association" {
   subnet_id      = aws_subnet.public.id
