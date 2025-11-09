@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git checkout') {
             steps {
-                git branch: 'branch1', url: 'git@github.com:prasad5d/jenkins-project-3.git'
+                git branch: 'branch1', url: 'https://github.com/prasad5d/jenkins-project-3.git'
             }
         }
         stage('terraform init') {
@@ -12,7 +12,7 @@ pipeline {
                 sh 'terraform init'
             }
         }
-        
+
         stage('terraform plan') {
             steps {
                 sh 'terraform plan'
