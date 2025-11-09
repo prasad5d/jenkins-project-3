@@ -7,11 +7,9 @@ pipeline {
                 git branch: 'branch1', url: 'https://github.com/prasad5d/jenkins-project-3.git'
             }
         }
-       }
-
-        stage('teraform destroy') {
+        stage('teraform apply') {
             steps {
-                sh 'terraform destroy -auto-approve'
+                sh 'terraform apply -auto-approve'
             }
         }
     }
